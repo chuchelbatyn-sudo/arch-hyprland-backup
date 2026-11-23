@@ -216,6 +216,10 @@ restore_system() {
   say ""
 
   local root="$BACKUP_DIR/system/etc"
+  if [ -d "$root" ] && grep -q '00000000-0000-0000-0000-000000000000' "$root/fstab" 2>/dev/null; then
+    warn "ВНИМАНИЕ: в этой копии UUID разделов заменены нулями (санитизация)."
+    warn "Не копируйте fstab и grub.cfg вслепую — подставьте реальные UUID из 'blkid'."
+  fi
   if [ -d "$root" ]; then
     local rel
     while IFS= read -r -d '' rel; do
