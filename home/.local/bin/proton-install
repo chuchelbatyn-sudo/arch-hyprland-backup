@@ -1,0 +1,147 @@
+
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Использование: proton-install <название> <installer.exe>"
+    exit 1
+fi
+
+NAME="$1"
+INSTALLER="$(realpath -- "$2")"
+
+if [[ ! "$NAME" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+    echo "Некорректное название программы"
+    exit 1
+fi
+
+if [[ ! -f "$INSTALLER" ]]; then
+    echo "Установщик не найден: $INSTALLER"
+    exit 1
+fi
+
+PROTON_ROOT="$HOME/.local/share/Steam/compatibilitytools.d"
+PREFIX="$HOME/Games/ProtonPrefixes/$NAME"
+
+mapfile -t VERSIONS < <(
+    find "$PROTON_ROOT" -mindepth 1 -maxdepth 1 \
+        -type d -name 'GE-Proton*' | sort -V
+)
+
+if [[ ${#VERSIONS[@]} -eq 0 ]]; then
+    echo "GE-Proton не найден!"
+    exit 1
+fi
+
+PROTON_DIR="${VERSIONS[-1]}"
+
+if [[ -f "$PREFIX/pfx/system.reg" ]]; then
+    echo "Prefix $NAME уже существует!"
+    exit 1
+fi
+
+mkdir -p "$PREFIX"
+
+export STEAM_COMPAT_DATA_PATH="$PREFIX"
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam"
+export PROTON_USE_XALIA=0
+
+echo "Установка: $NAME"
+echo "Proton: $(basename "$PROTON_DIR")"
+
+cd "$(dirname "$INSTALLER")"
+
+if [[ "${PROTON_NVIDIA:-0}" == "1" ]] && command -v prime-run >/dev/null; then
+    prime-run "$PROTON_DIR/proton" run "$INSTALLER"
+else
+    "$PROTON_DIR/proton" run "$INSTALLER"
+fi
+
+echo
+echo "Установка завершена. Ищу исполняемые файлы..."
+
+DRIVE="$PREFIX/pfx/drive_c"
+
+mapfile -t CANDIDATES < <(
+    find "$DRIVE" -type f -iname '*.exe' \
+        ! -ipath '*/windows/*' \
+        ! -iname 'unins*.exe' \
+        ! -iname 'setup*.exe' \
+        ! -iname '*uninstall*.exe' \
+        ! -iname '*crashreporter*.exe' \
+        ! -iname 'vc_redist*.exe' \
+        | sort
+)
+
+if [[ ${#CANDIDATES[@]} -eq 0 ]]; then
+    echo "EXE не найдены. Ярлык не создан."
+    exit 0
+fi
+
+# В списке показываем путь относительно drive_c, чтобы длинные пути влезали в rofi
+DISPLAY_PATHS=()
+for file in "${CANDIDATES[@]}"; do
+    DISPLAY_PATHS+=("${file#"$DRIVE"/}")
+done
+
+echo "Выбери основной EXE программы:"
+
+if command -v rofi >/dev/null; then
+    CHOICE="$(printf '%s\n' "${DISPLAY_PATHS[@]}" | rofi -dmenu -i -p "Выбери EXE")"
+else
+    select CHOICE in "${DISPLAY_PATHS[@]}"; do
+        [[ -n "${CHOICE:-}" ]] && break
+    done
+fi
+
+if [[ -z "${CHOICE:-}" ]]; then
+    echo "Создание ярлыка отменено."
+    exit 0
+fi
+
+GAME="$DRIVE/$CHOICE"
+
+if [[ ! -f "$GAME" ]]; then
+    echo "Файл не найден: $GAME"
+    exit 1
+fi
+
+mkdir -p "$HOME/.local/share/applications"
+mkdir -p "$HOME/.local/share/proton-launchers"
+
+# Создаём отдельный скрипт запуска
+LAUNCHER="$HOME/.local/share/proton-launchers/$NAME.sh"
+
+{
+    printf '#!/usr/bin/env bash\n'
+    printf 'exec "%s" "%s" "%s" "$@"\n' \
+        "$HOME/.local/bin/proton-run" \
+        "$NAME" \
+        "$GAME"
+} > "$LAUNCHER"
+
+chmod +x "$LAUNCHER"
+
+# Создаём ярлык приложения
+DESKTOP="$HOME/.local/share/applications/proton-$NAME.desktop"
+
+cat > "$DESKTOP" <<EOF
+[Desktop Entry]
+Name=$NAME
+Comment=Windows application via GE-Proton
+Exec=$LAUNCHER
+Icon=applications-games
+Terminal=false
+Type=Application
+Categories=Game;Utility;
+StartupNotify=true
+EOF
+
+update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+
+echo
+echo "Ярлык успешно создан!"
+echo "Программа: $NAME"
+echo "EXE: $GAME"
+echo "Ярлык: $DESKTOP"
+echo "Теперь ищи $NAME в Rofi."

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PROTON="/home/user/.local/share/Steam/compatibilitytools.d/GE-Proton11-12-x86_64"
+
+GAME="$1"
+PREFIX="$HOME/Games/ProtonPrefix"
+
+export STEAM_COMPAT_DATA_PATH="$PREFIX"
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.steam/steam"
+
+export PROTON_DISABLE_XALIA=1
+
+"$PROTON/proton" run "$GAME"

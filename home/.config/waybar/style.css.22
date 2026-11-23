@@ -1,0 +1,112 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 11px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: rgba(24, 26, 33, 0.92);
+    color: #c4c8d4;
+    border: none;
+    box-shadow: none;
+}
+
+/* Левый, центральный и правый блоки */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.modules-left {
+    padding-left: 8px;
+}
+
+.modules-center {
+    padding: 0;
+}
+
+.modules-right {
+    padding-right: 8px;
+}
+
+/* Рабочие столы */
+#workspaces button {
+    color: #777d8c;
+    background: transparent;
+    padding: 0 8px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    transition: color 0.15s ease;
+}
+
+#workspaces button:hover {
+    color: #c4c8d4;
+}
+
+#workspaces button.active {
+    color: #ffffff;
+}
+
+#workspaces button.urgent {
+    color: #eb6f92;
+}
+
+/* Часы */
+#clock {
+    color: #e5e7eb;
+    font-weight: bold;
+    padding: 0 12px;
+}
+
+/* Системные индикаторы */
+#pulseaudio,
+#network,
+#bluetooth,
+#battery,
+#language {
+    color: #8b91a1;
+    padding: 0 7px;
+    margin: 0;
+    transition: color 0.15s ease;
+}
+
+#pulseaudio.muted {
+    color: #5a5e6b;
+}
+
+#network.disconnected {
+    color: #5a5e6b;
+}
+
+#battery.warning {
+    color: #f6c177;
+}
+
+#battery.critical:not(.charging) {
+    color: #eb6f92;
+}
+
+#language {
+    color: #c4c8d4;
+    font-weight: bold;
+}
+
+tooltip {
+    background: #191b22;
+    color: #e5e7eb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+}
+
+tooltip label {
+    padding: 3px;
+}

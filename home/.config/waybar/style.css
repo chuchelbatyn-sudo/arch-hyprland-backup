@@ -1,0 +1,190 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 11px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: rgba(24, 26, 33, 0.96);
+    color: #dcdfe7;
+    border: none;
+    box-shadow: none;
+}
+
+/* Левый, центральный и правый блоки */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.modules-left {
+    padding-left: 8px;
+}
+
+.modules-center {
+    padding: 0;
+}
+
+.modules-right {
+    padding-right: 8px;
+}
+
+/* Рабочие столы */
+#workspaces {
+margin: 0;
+padding: 0;
+}
+
+#workspaces button {
+color: #8b91a1;
+background: transparent;
+padding: 0 7px;
+margin: 0;
+border: none;
+border-radius: 0;
+box-shadow: none;
+transition: background 0.15s ease;
+}
+
+#workspaces button:hover {
+color: #ffffff;
+background: rgba(255, 255, 255, 0.07);
+}
+
+#workspaces button.active {
+color: #9ccfd8;
+background: rgba(156, 207, 216, 0.10);
+box-shadow: inset 0 -2px #9ccfd8;
+}
+
+#workspaces button.urgent {
+color: #eb6f92;
+}
+
+/* Часы */
+#clock {
+color: #e5e7eb;
+font-weight: bold;
+padding: 0 10px;
+}
+
+/* Системные индикаторы и трей */
+#pulseaudio,
+#network,
+#bluetooth,
+#battery,
+#tray {
+color: #c4c8d4;
+padding: 0 6px;
+margin: 0;
+}
+
+#pulseaudio.muted {
+color: #777d8c;
+}
+
+#network.disconnected {
+color: #eb6f92;
+}
+
+#battery.warning {
+color: #f6c177;
+}
+
+#battery.critical:not(.charging) {
+color: #eb6f92;
+}
+
+#language {
+color: #9ccfd8;
+font-size: 11px;
+font-weight: bold;
+padding: 0 7px;
+}
+
+#custom-kvn {
+color: #9ccfd8;
+padding: 0 7px;
+margin: 0;
+}
+
+#custom-kvn.connected {
+color: #9ccfd8;
+}
+
+#custom-kvn.disconnected {
+color: #777d8c;
+}
+
+#custom-kvn.connecting {
+color: #f6c177;
+}
+
+#custom-power {
+color: #eb6f92;
+padding: 0 10px;
+margin: 0;
+}
+
+#custom-power:hover {
+color: #f6c177;
+background-color: rgba(255, 255, 255, 0.06);
+}
+
+#backlight {
+color: #9ccfd8;
+font-size: 18px;
+padding: 0 3px;
+margin: 3px 2px;
+border-radius: 6px;
+}
+
+#backlight:hover {
+background-color: #222530;
+}
+
+tooltip {
+    background: #191b22;
+    color: #e5e7eb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+}
+
+tooltip label {
+    padding: 3px;
+}
+
+/* Global Waybar scaling */
+* {
+    font-size: 15px;
+}
+
+/* Bar height */
+window#waybar {
+    min-height: 36px;
+}
+
+/* Workspaces */
+#workspaces button {
+padding: 0 8px;
+}
+
+/* Status modules */
+#clock,
+#pulseaudio,
+#network,
+#bluetooth,
+#backlight,
+#battery,
+#custom-kvn,
+#custom-power,
+#language {
+padding: 0 9px;
+}

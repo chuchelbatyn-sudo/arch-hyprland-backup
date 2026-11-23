@@ -1,0 +1,31 @@
+
+#!/usr/bin/env bash
+
+choice=$(printf '%s\n' \
+    '󰌾  Заблокировать экран' \
+    '󰒲  Спящий режим' \
+    '󰍃  Выйти из системы' \
+    '󰜉  Перезагрузка' \
+    '󰐥  Выключение' \
+    'Отмена' |
+    rofi -dmenu -i -p 'Питание')
+
+case "$choice" in
+    *"Заблокировать экран")
+        hyprlock
+        ;;
+    *"Спящий режим")
+        hyprlock &
+        sleep 1
+        systemctl suspend
+        ;;
+    *"Выйти из системы")
+        hyprctl dispatch exit
+        ;;
+    *"Перезагрузка")
+        systemctl reboot
+        ;;
+    *"Выключение")
+        systemctl poweroff
+        ;;
+esac

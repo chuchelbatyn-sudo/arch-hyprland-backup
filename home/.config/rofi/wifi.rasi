@@ -1,0 +1,87 @@
+
+configuration {
+    show-icons: true;
+    font: "JetBrainsMono Nerd Font 10";
+    display-network: "Wi-Fi";
+}
+
+* {
+    bg: #181a21;
+    bg-alt: #232630;
+    fg: #dcdfe7;
+    muted: #8b91a1;
+    accent: #9ccfd8;
+
+    background-color: @bg;
+    text-color: @fg;
+}
+
+window {
+    width: 380px;
+    border: 1px;
+    border-color: #303440;
+    border-radius: 10px;
+    padding: 12px;
+    location: center;
+    anchor: center;
+}
+
+mainbox {
+    spacing: 8px;
+    children: [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius: 7px;
+    padding: 9px;
+    spacing: 8px;
+    children: [ "prompt", "entry" ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Поиск сети...";
+    placeholder-color: @muted;
+}
+
+listview {
+    lines: 8;
+    columns: 1;
+    fixed-height: true;
+    scrollbar: false;
+    spacing: 3px;
+}
+
+element {
+    padding: 9px;
+    border-radius: 6px;
+    spacing: 8px;
+}
+
+element selected {
+    background-color: @bg-alt;
+    text-color: @accent;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+element-icon {
+    size: 16px;
+    background-color: inherit;
+}
+
+message {
+    padding: 5px;
+    background-color: @bg;
+}
+
+textbox {
+    text-color: @muted;
+}

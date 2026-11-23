@@ -1,0 +1,51 @@
+
+window#osd {
+    background-color: rgba(30, 32, 40, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+}
+
+#container {
+    margin: 18px 22px;
+}
+
+image {
+    color: #e0def4;
+    -gtk-icon-size: 24px;
+    margin-right: 12px;
+}
+
+label {
+    color: #e0def4;
+    font-family: Sans;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+progressbar {
+    min-width: 180px;
+    min-height: 8px;
+    border-radius: 999px;
+    margin-top: 8px;
+}
+
+progressbar trough {
+    background-color: rgba(224, 222, 244, 0.15);
+    border-radius: 999px;
+    min-height: 8px;
+}
+
+progressbar progress {
+    background-color: #9ccfd8;
+    border-radius: 999px;
+    min-height: 8px;
+}
+
+progressbar:disabled {
+    opacity: 0.45;
+}
+
+[server]
+style = "/home/user/.config/swayosd/style.css"
+top_margin = 0.15
+show_percentage = true

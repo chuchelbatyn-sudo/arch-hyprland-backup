@@ -1,0 +1,201 @@
+# Снято: 2026-11-23T15:22:07+03:00
+
+## uname
+Linux arch-host 7.2.14-arch1-1 #1 SMP PREEMPT_DYNAMIC Fri, 30 Oct 2026 14:32:40 +0000 x86_64 GNU/Linux
+
+## hostnamectl
+  Static hostname: arch-host
+        Icon name: computer-laptop
+          Chassis: laptop 💻
+Chassis Asset Tag: No Asset Tag
+       Machine ID: 00000000000000000000000000000000
+          Boot ID: 00000000000000000000000000000000
+ Operating System: Arch Linux
+           Kernel: Linux 7.2.14-arch1-1
+     Architecture: x86-64
+  Hardware Vendor: ASUSTeK COMPUTER INC.
+   Hardware Model: ROG arch-host G14 GA401IH_GA401IH
+ Hardware Version: 1.0
+ Firmware Version: GA401IH.222
+    Firmware Date: Thu 2023-09-28
+     Firmware Age: 3y 1month 3w 5d
+
+## cpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           44 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  12
+On-line CPU(s) list:                     0-11
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD Ryzen 5 4600HS with Radeon Graphics
+CPU family:                              23
+Model:                                   96
+Thread(s) per core:                      2
+Core(s) per socket:                      6
+Socket(s):                               1
+Stepping:                                1
+Microcode version:                       0x860010d
+Frequency boost:                         enabled
+CPU(s) scaling MHz:                      68%
+CPU max MHz:                             4000.0000
+CPU min MHz:                             1400.0000
+BogoMIPS:                                5989.39
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip rdpid overflow_recov succor smca sev sev_es
+Virtualization:                          AMD-V
+L1d cache:                               192 KiB (6 instances)
+L1i cache:                               192 KiB (6 instances)
+L2 cache:                                3 MiB (6 instances)
+L3 cache:                                8 MiB (2 instances)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-11
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; untrained return thunk; SMT enabled with STIBP protection
+Vulnerability Spec rstack overflow:      Mitigation; Safe RET
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+
+## gpu/pci
+00:00.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne Root Complex [1022:1630]
+00:00.2 IOMMU [0806]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne IOMMU [1022:1631]
+00:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge [1022:1632]
+00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir PCIe GPP Bridge [1022:1633]
+00:02.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge [1022:1632]
+00:02.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge [1022:1634]
+00:02.4 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge [1022:1634]
+00:08.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge [1022:1632]
+00:08.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus [1022:1635]
+00:08.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus [1022:1635]
+00:14.0 SMBus [0c05]: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller [1022:790b] (rev 51)
+00:14.3 ISA bridge [0601]: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge [1022:790e] (rev 51)
+00:18.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 0 [1022:1448]
+00:18.1 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 1 [1022:1449]
+00:18.2 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 2 [1022:144a]
+00:18.3 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 3 [1022:144b]
+00:18.4 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 4 [1022:144c]
+00:18.5 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 5 [1022:144d]
+00:18.6 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 6 [1022:144e]
+00:18.7 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Renoir Device 24: Function 7 [1022:144f]
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU117M [GeForce GTX 1650 Mobile / Max-Q] [10de:1f99] (rev a1)
+01:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:10fa] (rev a1)
+02:00.0 Network controller [0280]: Intel Corporation Wi-Fi 6 AX200 [8086:2723] (rev 1a)
+03:00.0 Non-Volatile memory controller [0108]: Intel Corporation SSD 660P Series [8086:f1a8] (rev 03)
+04:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Renoir [Radeon Vega Series / Radeon Vega Mobile Series] [1002:1636] (rev c7)
+04:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Renoir/Cezanne HDMI/DP Audio Controller [1002:1637]
+04:00.2 Encryption controller [1080]: Advanced Micro Devices, Inc. [AMD] Raven/Raven2/FireFlight/Renoir/Cezanne Platform Security Processor [1022:15df]
+04:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1 [1022:1639]
+04:00.4 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1 [1022:1639]
+04:00.5 Multimedia controller [0480]: Advanced Micro Devices, Inc. [AMD] Audio Coprocessor [1022:15e2] (rev 01)
+04:00.6 Audio device [0403]: Advanced Micro Devices, Inc. [AMD] Ryzen HD Audio Controller [1022:15e3]
+05:00.0 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 81)
+05:00.1 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] [1022:7901] (rev 81)
+
+## usb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 0b05:1866 ASUSTek Computer, Inc. N-KEY Device
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 002: ID 27c6:521d Shenzhen Goodix Technology Co.,Ltd. FingerPrint
+Bus 003 Device 003: ID 8087:0029 Intel Corp. AX200 Bluetooth
+Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+
+## block
+NAME        FSTYPE FSVER LABEL UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+zram0       swap   1     zram0 e0ac7a54-89a0-4a12-a71f-6dab6d07ee51                [SWAP]
+nvme0n1                                                                            
+├─nvme0n1p1 vfat   FAT32       0000-0000                             836.4M    18% /boot
+└─nvme0n1p2 btrfs              00000000-0000-0000-0000-000000000000  359.9G    24% /home/user/Documents/deepseek-harness/default-workspace
+                                                                                   /var/log
+                                                                                   /var/cache/pacman/pkg
+                                                                                   /home
+                                                                                   /
+
+## df
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  476G  115G  360G  25% /
+tmpfs           7.6G     0  7.6G   0% /dev
+efivarfs        128K   47K   77K  39% /sys/firmware/efi/efivars
+run             7.6G  1.5M  7.6G   1% /run
+tmpfs           1.6G  8.4M  1.5G   1% /run/user/1000
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/nvme0n1p2  476G  115G  360G  25% /home
+tmpfs           7.6G     0  7.6G   0% /tmp
+/dev/nvme0n1p2  476G  115G  360G  25% /var/cache/pacman/pkg
+/dev/nvme0n1p2  476G  115G  360G  25% /var/log
+/dev/nvme0n1p1 1022M  186M  837M  19% /boot
+dev             7.5G     0  7.5G   0% /dev/tty
+
+## swap
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition 7.5G 1.3G  100
+
+## zram
+
+## cmdline
+BOOT_IMAGE=/vmlinuz-linux root=UUID=00000000-0000-0000-0000-000000000000 rw rootflags=subvol=@ zswap.enabled=0 rootfstype=btrfs loglevel=3 quiet
+
+## btrfs
+ERROR: can't perform the search: Operation not permitted
+
+## efibootmgr
+BootCurrent: 000D
+Timeout: 1 seconds
+BootOrder: 000D,0005,0004,0008,000B,000C,0006,0003,0001,000A,0007,0009,0002,0000,000E,000F,0010
+Boot0000* Windows Boot Manager	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)57494e444f5753000100000088000000780000004200430044004f0042004a004500430054003d007b00390064006500610038003600320063002d0035006300640064002d0034006500370030002d0061006300630031002d006600330032006200330034003400640034003700390035007d0000002e000100000010000000040000007fff0400
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+    data: 57 49 4e 44 4f 57 53 00 01 00 00 00 88 00 00 00 78 00 00 00 42 00 43 00 44 00 4f 00 42 00 4a 00 45 00 43 00 54 00 3d 00 7b 00 39 00 64 00 65 00 61 00 38 00 36 00 32 00 63 00 2d 00 35 00 63 00 64 00 64 00 2d 00 34 00 65 00 37 00 30 00 2d 00 61 00 63 00 63 00 31 00 2d 00 66 00 33 00 32 00 62 00 33 00 34 00 34 00 64 00 34 00 37 00 39 00 35 00 7d 00 00 00 2e 00 01 00 00 00 10 00 00 00 04 00 00 00 7f ff 04 00
+Boot0001* endeavouros	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0002* Ubuntu	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0003* vanilla	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0004* Linux Boot Manager	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0005* vanilla	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0006* Arch Linux (linux)	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)69006e0069007400720064003d002f0069006e0069007400720061006d00660073002d006c0069006e00750078002e0069006d006700200072006f006f0074003d00500041005200540055005500490044003d00380038003500350034003000640035002d0061003900360063002d0034006500310031002d0039003600310065002d0032003100310061003600350033003500330036003900620020007a0073007700610070002e0065006e00610062006c00650064003d003000200072006f006f00740066006c006100670073003d0073007500620076006f006c003d004000200072007700200072006f006f0074006600730074007900700065003d0062007400720066007300
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+    data: 69 00 6e 00 69 00 74 00 72 00 64 00 3d 00 2f 00 69 00 6e 00 69 00 74 00 72 00 61 00 6d 00 66 00 73 00 2d 00 6c 00 69 00 6e 00 75 00 78 00 2e 00 69 00 6d 00 67 00 20 00 72 00 6f 00 6f 00 74 00 3d 00 50 00 41 00 52 00 54 00 55 00 55 00 49 00 44 00 3d 00 38 00 38 00 35 00 35 00 34 00 30 00 64 00 35 00 2d 00 61 00 39 00 36 00 63 00 2d 00 34 00 65 00 31 00 31 00 2d 00 39 00 36 00 31 00 65 00 2d 00 32 00 31 00 31 00 61 00 36 00 35 00 33 00 35 00 33 00 36 00 39 00 62 00 20 00 7a 00 73 00 77 00 61 00 70 00 2e 00 65 00 6e 00 61 00 62 00 6c 00 65 00 64 00 3d 00 30 00 20 00 72 00 6f 00 6f 00 74 00 66 00 6c 00 61 00 67 00 73 00 3d 00 73 00 75 00 62 00 76 00 6f 00 6c 00 3d 00 40 00 20 00 72 00 77 00 20 00 72 00 6f 00 6f 00 74 00 66 00 73 00 74 00 79 00 70 00 65 00 3d 00 62 00 74 00 72 00 66 00 73 00
+Boot0007* Manjaro	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0008* altlinux	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot0009* GRUB	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot000A* Fedora	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot000B* cachyos	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot000C* ALG	VenHw(99e275e7-75a0-4b37-a2e6-c5385e6c00cb)
+      dp: 01 04 14 00 e7 75 e2 99 a0 75 37 4b a2 e6 c5 38 5e 6c 00 cb / 7f ff 04 00
+Boot000D* UEFI OS	HD(1,GPT,b63fb2c0-8ab1-4c53-8067-a1157a5b6428,0x800,0x200000)/\EFI\BOOT\BOOTX64.EFI0000424f
+      dp: 04 01 2a 00 01 00 00 00 00 08 00 00 00 00 00 00 00 00 20 00 00 00 00 00 c0 b2 3f b6 b1 8a 53 4c 80 67 a1 15 7a 5b 64 28 02 02 / 04 04 30 00 5c 00 45 00 46 00 49 00 5c 00 42 00 4f 00 4f 00 54 00 5c 00 42 00 4f 00 4f 00 54 00 58 00 36 00 34 00 2e 00 45 00 46 00 49 00 00 00 / 7f ff 04 00
+    data: 00 00 42 4f
+Boot000E* UEFI:CD/DVD Drive	BBS(129,,0x0)
+      dp: 05 01 09 00 81 00 00 00 00 / 7f ff 04 00
+Boot000F* UEFI:Removable Device	BBS(130,,0x0)
+      dp: 05 01 09 00 82 00 00 00 00 / 7f ff 04 00
+Boot0010* UEFI:Network Device	BBS(131,,0x0)
+      dp: 05 01 09 00 83 00 00 00 00 / 7f ff 04 00
+
+## localectl
+System Locale: LANG=en_US.UTF-8
+    VC Keymap: us
+   X11 Layout: us
+    X11 Model: pc105+inet
+  X11 Options: terminate:ctrl_alt_bksp

@@ -1,0 +1,58 @@
+
+#!/usr/bin/env bash
+
+THEME="$HOME/.config/rofi/wifi.rasi"
+
+command -v powerprofilesctl >/dev/null 2>&1 || {
+    notify-send "Питание" "Не найден powerprofilesctl"
+    exit 1
+}
+
+while true; do
+    CURRENT=$(powerprofilesctl get) || exit 1
+    OPTIONS=()
+    declare -A PROFILE_MAP=()
+
+    add_profile() {
+        local id="$1"
+        local label="$2"
+        local row="$label"
+
+        if [[ "$CURRENT" == "$id" ]]; then
+            row="$label  ✓"
+        fi
+
+        OPTIONS+=("$row")
+        PROFILE_MAP["$row"]="$id"
+    }
+
+    AVAILABLE=$(powerprofilesctl list)
+
+    if grep -qE '^[*[:space:]]*power-saver:' <<< "$AVAILABLE"; then
+        add_profile "power-saver" "Экономия энергии"
+    fi
+
+    if grep -qE '^[*[:space:]]*balanced:' <<< "$AVAILABLE"; then
+        add_profile "balanced" "Сбалансированный"
+    fi
+
+    if grep -qE '^[*[:space:]]*performance:' <<< "$AVAILABLE"; then
+        add_profile "performance" "Производительность"
+    fi
+
+    SELECTED=$(printf '%s\n' "${OPTIONS[@]}" |
+        rofi -dmenu -i -p "Режим питания" -theme "$THEME") || exit 0
+
+    [[ -n "$SELECTED" ]] || exit 0
+
+    PROFILE="${PROFILE_MAP[$SELECTED]:-}"
+    [[ -n "$PROFILE" ]] || exit 0
+
+    if powerprofilesctl set "$PROFILE"; then
+        notify-send "Режим питания" "$SELECTED"
+    else
+        notify-send "Ошибка" "Не удалось переключить профиль"
+    fi
+
+    exit 0
+done

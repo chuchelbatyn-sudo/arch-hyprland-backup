@@ -1,0 +1,13 @@
+bluetooth.service
+cups.path
+cups.service
+cups.socket
+getty@.service
+NetworkManager-dispatcher.service
+NetworkManager.service
+NetworkManager-wait-online.service
+remote-fs.target
+sddm.service
+sota-connect.service
+systemd-timesyncd.service
+systemd-userdbd.socket

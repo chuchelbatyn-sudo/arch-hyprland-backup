@@ -1,0 +1,60 @@
+
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Использование: proton-install <название> <installer.exe>"
+    exit 1
+fi
+
+NAME="$1"
+INSTALLER="$(realpath -- "$2")"
+
+if [[ ! -f "$INSTALLER" ]]; then
+    echo "Установщик не найден: $INSTALLER"
+    exit 1
+fi
+
+if [[ ! "$NAME" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+    echo "Используй название из латинских букв, цифр, точек, - и _"
+    exit 1
+fi
+
+PROTON_ROOT="$HOME/.local/share/Steam/compatibilitytools.d"
+
+mapfile -t VERSIONS < <(
+    find "$PROTON_ROOT" -mindepth 1 -maxdepth 1 \
+        -type d -name 'GE-Proton*' | sort -V
+)
+
+if [[ ${#VERSIONS[@]} -eq 0 ]]; then
+    echo "GE-Proton не найден!"
+    exit 1
+fi
+
+PROTON_DIR="${VERSIONS[-1]}"
+PREFIX="$HOME/Games/ProtonPrefixes/$NAME"
+
+if [[ -e "$PREFIX/pfx/system.reg" ]]; then
+    echo "Окружение $NAME уже существует!"
+    echo "Используй другое имя или proton-run."
+    exit 1
+fi
+
+mkdir -p "$PREFIX"
+
+export STEAM_COMPAT_DATA_PATH="$PREFIX"
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam"
+export PROTON_USE_XALIA=0
+
+echo "Установка: $NAME"
+echo "Proton: $(basename "$PROTON_DIR")"
+echo "Prefix: $PREFIX"
+
+cd "$(dirname "$INSTALLER")"
+
+if [[ "${PROTON_NVIDIA:-0}" == "1" ]] && command -v prime-run >/dev/null; then
+    exec prime-run "$PROTON_DIR/proton" run "$INSTALLER"
+else
+    exec "$PROTON_DIR/proton" run "$INSTALLER"
+fi

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+ITEM=$(cliphist list | rofi -dmenu -i \
+    -p "Буфер обмена" \
+    -theme "$HOME/.config/rofi/apps.rasi") || exit 0
+
+[[ -n "$ITEM" ]] || exit 0
+printf '%s\n' "$ITEM" | cliphist decode | wl-copy

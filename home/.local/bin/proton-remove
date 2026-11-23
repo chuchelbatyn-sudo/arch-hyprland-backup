@@ -1,0 +1,62 @@
+
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+PREFIX_DIR="$HOME/Games/ProtonPrefixes"
+LAUNCHER_DIR="$HOME/.local/share/proton-launchers"
+APPLICATIONS_DIR="$HOME/.local/share/applications"
+
+# Проверяем наличие Rofi
+if ! command -v rofi >/dev/null 2>&1; then
+    echo "Ошибка: rofi не найден."
+    exit 1
+fi
+
+# Собираем установленные префиксы
+mapfile -t PREFIXES < <(
+    find "$PREFIX_DIR" -mindepth 1 -maxdepth 1 -type d -print 2>/dev/null |
+    while IFS= read -r dir; do
+        if [[ -f "$dir/pfx/system.reg" ]]; then
+            basename "$dir"
+        fi
+    done |
+    sort -f
+)
+
+if [[ ${#PREFIXES[@]} -eq 0 ]]; then
+    rofi -e "Установленные Proton-префиксы не найдены."
+    exit 0
+fi
+
+# Выбор игры
+NAME=$(printf '%s\n' "${PREFIXES[@]}" |
+    rofi -dmenu -i -p "Удалить Proton-префикс")
+
+[[ -n "$NAME" ]] || exit 0
+
+# Дополнительная проверка имени
+if [[ ! "$NAME" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+    rofi -e "Некорректное имя префикса."
+    exit 1
+fi
+
+PREFIX="$PREFIX_DIR/$NAME"
+
+# Подтверждение удаления
+CONFIRM=$(printf 'Нет\nДа, удалить полностью' |
+    rofi -dmenu -i -p "Удалить $NAME?")
+
+[[ "$CONFIRM" == "Да, удалить полностью" ]] || exit 0
+
+# Удаляем Proton-префикс и связанные ярлыки
+rm -rf -- "$PREFIX"
+rm -f -- "$APPLICATIONS_DIR/proton-$NAME.desktop"
+rm -f -- "$LAUNCHER_DIR/$NAME.sh"
+
+# Обновляем базу ярлыков
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "$APPLICATIONS_DIR" 2>/dev/null || true
+fi
+
+rofi -e "$NAME успешно удалён вместе с ярлыками."
+

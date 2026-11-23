@@ -1,0 +1,77 @@
+# Системные включённые юниты
+UNIT FILE                          STATE   PRESET
+cups.path                          enabled disabled
+bluetooth.service                  enabled disabled
+cups.service                       enabled disabled
+getty@.service                     enabled enabled
+NetworkManager-dispatcher.service  enabled disabled
+NetworkManager-wait-online.service enabled disabled
+NetworkManager.service             enabled disabled
+sddm.service                       enabled disabled
+sota-connect.service               enabled disabled
+systemd-timesyncd.service          enabled enabled
+cups.socket                        enabled disabled
+systemd-userdbd.socket             enabled enabled
+remote-fs.target                   enabled enabled
+
+13 unit files listed.
+
+# Активные сервисы
+  UNIT                               LOAD   ACTIVE SUB     DESCRIPTION
+  bluetooth.service                  loaded active running Bluetooth service
+  cups.service                       loaded active running CUPS Scheduler
+  dbus-broker.service                loaded active running D-Bus System Message Bus
+  dirmngr@etc-pacman.d-gnupg.service loaded active running GnuPG network certificate management daemon for /etc/pacman.d/gnupg
+  NetworkManager.service             loaded active running Network Manager
+  polkit.service                     loaded active running Authorization Manager
+  power-profiles-daemon.service      loaded active running Power Profiles daemon
+  sddm.service                       loaded active running Simple Desktop Display Manager
+  sota-connect.service               loaded active running Sota Connect VPN daemon (KittenCore)
+  systemd-hostnamed.service          loaded active running Hostname Service
+  systemd-journald.service           loaded active running Journal Service
+  systemd-localed.service            loaded active running Locale Service
+  systemd-logind.service             loaded active running User Login Management
+  systemd-timesyncd.service          loaded active running Network Time Synchronization
+  systemd-udevd.service              loaded active running Rule-based Manager for Device Events and Files
+  systemd-userdbd.service            loaded active running User Database Manager
+  udisks2.service                    loaded active running Disk Manager
+  upower.service                     loaded active running Daemon for power management
+  user@1000.service                  loaded active running User Manager for UID 1000
+  wpa_supplicant.service             loaded active running WPA supplicant
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+20 loaded units listed.
+
+# Пользовательские включённые юниты
+Failed to connect to user scope bus via local transport: No data available
+
+# Симлинки включения
+--- /etc/systemd/system/bluetooth.target.wants
+total 4
+lrwxrwxrwx 1 nobody nobody 41 Oct 28 11:32 bluetooth.service -> /usr/lib/systemd/system/bluetooth.service
+--- /etc/systemd/system/getty.target.wants
+total 4
+lrwxrwxrwx 1 nobody nobody 38 Oct 28 11:31 getty@tty1.service -> /usr/lib/systemd/system/getty@.service
+--- /etc/systemd/system/multi-user.target.wants
+total 20
+lrwxrwxrwx 1 nobody nobody 33 Oct 28 11:33 cups.path -> /usr/lib/systemd/system/cups.path
+lrwxrwxrwx 1 nobody nobody 36 Oct 28 11:33 cups.service -> /usr/lib/systemd/system/cups.service
+lrwxrwxrwx 1 nobody nobody 46 Oct 28 11:32 NetworkManager.service -> /usr/lib/systemd/system/NetworkManager.service
+lrwxrwxrwx 1 nobody nobody 40 Oct 28 11:31 remote-fs.target -> /usr/lib/systemd/system/remote-fs.target
+lrwxrwxrwx 1 nobody nobody 44 Nov 14 14:02 sota-connect.service -> /usr/lib/systemd/system/sota-connect.service
+--- /etc/systemd/system/network-online.target.wants
+total 4
+lrwxrwxrwx 1 nobody nobody 58 Oct 28 11:32 NetworkManager-wait-online.service -> /usr/lib/systemd/system/NetworkManager-wait-online.service
+--- /etc/systemd/system/printer.target.wants
+total 4
+lrwxrwxrwx 1 nobody nobody 36 Oct 28 11:33 cups.service -> /usr/lib/systemd/system/cups.service
+--- /etc/systemd/system/sockets.target.wants
+total 8
+lrwxrwxrwx 1 nobody nobody 35 Oct 28 11:33 cups.socket -> /usr/lib/systemd/system/cups.socket
+lrwxrwxrwx 1 nobody nobody 46 Oct 28 11:31 systemd-userdbd.socket -> /usr/lib/systemd/system/systemd-userdbd.socket
+--- /etc/systemd/system/sysinit.target.wants
+total 4
+lrwxrwxrwx 1 nobody nobody 49 Oct 28 11:36 systemd-timesyncd.service -> /usr/lib/systemd/system/systemd-timesyncd.service

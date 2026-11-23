@@ -1,0 +1,59 @@
+
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Использование: proton-run <название> <program.exe> [аргументы]"
+    exit 1
+fi
+
+NAME="$1"
+GAME="$(realpath -- "$2")"
+shift 2
+
+if [[ ! "$NAME" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+    echo "Некорректное название окружения"
+    exit 1
+fi
+
+if [[ ! -f "$GAME" ]]; then
+    echo "Файл не найден: $GAME"
+    exit 1
+fi
+
+PREFIX="$HOME/Games/ProtonPrefixes/$NAME"
+
+if [[ ! -f "$PREFIX/pfx/system.reg" ]]; then
+    echo "Окружение $NAME не найдено!"
+    echo "Сначала установи программу через proton-install."
+    exit 1
+fi
+
+PROTON_ROOT="$HOME/.local/share/Steam/compatibilitytools.d"
+
+mapfile -t VERSIONS < <(
+    find "$PROTON_ROOT" -mindepth 1 -maxdepth 1 \
+        -type d -name 'GE-Proton*' | sort -V
+)
+
+if [[ ${#VERSIONS[@]} -eq 0 ]]; then
+    echo "GE-Proton не найден!"
+    exit 1
+fi
+
+PROTON_DIR="${VERSIONS[-1]}"
+
+export STEAM_COMPAT_DATA_PATH="$PREFIX"
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam"
+export PROTON_USE_XALIA=0
+
+echo "Запуск: $NAME"
+echo "Proton: $(basename "$PROTON_DIR")"
+
+cd "$(dirname "$GAME")"
+
+if [[ "${PROTON_NVIDIA:-0}" == "1" ]] && command -v prime-run >/dev/null; then
+    exec prime-run "$PROTON_DIR/proton" run "$GAME" "$@"
+else
+    exec "$PROTON_DIR/proton" run "$GAME" "$@"
+fi

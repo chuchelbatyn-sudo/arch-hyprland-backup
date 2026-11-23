@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=War Thunder
+Comment=Запуск War Thunder
+Exec=/home/user/WarThunder/launcher
+Path=/home/user/WarThunder
+Terminal=false
+Type=Application
+Categories=Game;
+Icon=/home/user/WarThunder/launcher.ico

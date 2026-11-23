@@ -1,0 +1,2 @@
+Пакеты исключены из списков: claude-code claude-desktop kvn-tui-bin kvn-tui-bin-debug xray xray-debug sotavpn hiddify hiddify-debug
+472K	/home/user/Documents/deepseek-harness/default-workspace/archbackup-build/stage

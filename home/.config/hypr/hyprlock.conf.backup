@@ -1,0 +1,65 @@
+
+general {
+    hide_cursor = true
+    ignore_empty_input = true
+}
+
+background {
+    monitor =
+    color = rgba(24, 26, 33, 1.0)
+}
+
+input-field {
+    monitor =
+    size = 300, 50
+    outline_thickness = 2
+    dots_size = 0.25
+    dots_spacing = 0.3
+    dots_center = true
+    outer_color = rgba(156, 207, 216, 1.0)
+    inner_color = rgba(24, 26, 33, 1.0)
+    font_color = rgba(224, 222, 244, 1.0)
+    fade_on_empty = false
+    placeholder_text = Ghost walk ^-^
+    rounding = 10
+    check_color = rgba(156, 207, 216, 1.0)
+    fail_color = rgba(235, 111, 146, 1.0)
+    position = 0, -80
+    halign = center
+    valign = center
+}
+
+label {
+    monitor =
+    text = $LAYOUT[US,RU]
+    color = rgba(156, 207, 216, 1.0)
+    font_size = 18
+    font_family = Sans
+    position = -30, 30
+    halign = right
+    valign = bottom
+}
+
+# CLOCK
+label {
+    monitor =
+    text = $TIME
+    color = rgba(156, 207, 216, 1.0)
+    font_size = 110
+    font_family = JetBrainsMono Nerd Font
+    position = 0, 100
+    halign = center
+    valign = center
+}
+
+# DATE
+label {
+    monitor =
+    text = cmd[update:60000] date +"%A, %d %B"
+    color = rgba(224, 222, 244, 0.85)
+    font_size = 24
+    font_family = JetBrainsMono Nerd Font
+    position = 0, 15
+    halign = center
+    valign = center
+}

@@ -1,0 +1,44 @@
+# Автозапуск XDG
+at-spi-dbus-bus.desktop
+baloo_file.desktop
+blueman.desktop
+nm-applet.desktop
+polkit-kde-authentication-agent-1.desktop
+print-applet.desktop
+xdg-user-dirs.desktop
+
+# Переопределения пользователя
+remmina-applet.desktop
+
+# exec-once из hyprland.lua
+55:--   hl.exec_cmd(terminal)
+56:   hl.exec_cmd("waybar & kvn & hypridle & ~/.local/bin/cliphist-watch & swayosd-server")
+265:hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+266:hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(browser))
+267:hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(block))
+270:hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("~/.config/waybar/scripts/powermenu.sh"))
+271:hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("~/.local/bin/power-menu"))
+272:hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("Telegram"))
+273:hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("discord"))
+274:hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+276:hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+295:hl.bind("PRINT", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
+296:hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.local/bin/screenshot region"))
+299:hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.local/bin/cliphist-menu"))
+300:hl.bind("SUPER + SHIFT + BACKSPACE", hl.dsp.exec_cmd("cliphist wipe && wl-copy --clear"))
+315:--hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+316:--hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
+317:--hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
+318:--hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
+319:--hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
+320:--hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+324:        hl.dsp.exec_cmd("swayosd-client --output-volume raise"),
+328:        hl.dsp.exec_cmd("swayosd-client --output-volume lower"),
+332:        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"),
+336:        hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"),
+341:        hl.dsp.exec_cmd("swayosd-client --brightness raise --device amdgpu_bl1"),
+345:        hl.dsp.exec_cmd("swayosd-client --brightness lower --device amdgpu_bl1"),
+349:hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
+350:hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+351:hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+352:hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })

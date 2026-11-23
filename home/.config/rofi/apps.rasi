@@ -1,0 +1,80 @@
+
+configuration {
+    modi: "drun";
+    show-icons: true;
+    drun-display-format: "{name}";
+    display-drun: "Приложения";
+    hover-select: false;
+}
+
+* {
+    bg: #181a21;
+    bg-alt: #222530;
+    fg: #e0def4;
+    muted: #777d8c;
+    accent: #9ccfd8;
+
+    background-color: transparent;
+    text-color: @fg;
+    font: "Sans 12";
+}
+
+window {
+    width: 600px;
+    border: 1px;
+    border-color: @accent;
+    border-radius: 14px;
+    background-color: @bg;
+    padding: 18px;
+}
+
+mainbox {
+    spacing: 12px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border: 1px;
+    border-color: #393e4d;
+    border-radius: 9px;
+    padding: 12px;
+    spacing: 10px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Найти приложение...";
+    placeholder-color: @muted;
+}
+
+listview {
+    columns: 1;
+    lines: 8;
+    fixed-height: true;
+    scrollbar: false;
+    spacing: 4px;
+}
+
+element {
+    padding: 9px;
+    border-radius: 7px;
+    spacing: 10px;
+}
+
+element-icon {
+    size: 28px;
+}
+
+element-text {
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: @bg-alt;
+    text-color: @accent;
+}

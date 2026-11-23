@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Rail Route
+Comment=Rail Route via GE-Proton
+Exec=/home/user/.local/bin/proton-run Rail_route "/home/user/Games/ProtonPrefixes/Rail_route/pfx/drive_c/GOG Games/Rail Route/Rail Route.exe"
+Icon=applications-games
+Terminal=false
+Type=Application
+Categories=Game;Simulation;
+StartupNotify=true

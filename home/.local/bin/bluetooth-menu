@@ -1,0 +1,78 @@
+
+#!/usr/bin/env bash
+
+THEME="$HOME/.config/rofi/wifi.rasi"
+
+while true; do
+    if ! bluetoothctl show >/dev/null 2>&1; then
+        notify-send "Bluetooth" "Адаптер не найден"
+        exit 1
+    fi
+
+    POWER=$(bluetoothctl show | awk '/Powered:/ {print $2; exit}')
+
+    if [[ "$POWER" == "yes" ]]; then
+        POWER_ACTION="Выключить Bluetooth"
+    else
+        POWER_ACTION="Включить Bluetooth"
+    fi
+
+    ITEMS=("Поиск устройств" "$POWER_ACTION")
+    declare -A MAC_BY_ROW=()
+
+    if [[ "$POWER" == "yes" ]]; then
+        while read -r _ mac name; do
+            [[ -n "$mac" ]] || continue
+            [[ -n "$name" ]] || name="Неизвестное устройство"
+
+            INFO=$(bluetoothctl info "$mac" 2>/dev/null)
+            if grep -q "Connected: yes" <<< "$INFO"; then
+                STATUS="подключено"
+            elif grep -q "Paired: yes" <<< "$INFO"; then
+                STATUS="сопряжено"
+            else
+                STATUS="не подключено"
+            fi
+
+            ROW="$name — $STATUS [$mac]"
+            ITEMS+=("$ROW")
+            MAC_BY_ROW["$ROW"]="$mac"
+        done < <(bluetoothctl devices)
+    fi
+
+    SELECTED=$(printf '%s\n' "${ITEMS[@]}" |
+        rofi -dmenu -i -p "Bluetooth" -theme "$THEME") || exit 0
+
+    case "$SELECTED" in
+        "Поиск устройств")
+            bluetoothctl --timeout 8 scan on >/dev/null 2>&1
+            continue
+            ;;
+        "Включить Bluetooth")
+            bluetoothctl power on
+            sleep 1
+            continue
+            ;;
+        "Выключить Bluetooth")
+            bluetoothctl power off
+            continue
+            ;;
+    esac
+
+    MAC="${MAC_BY_ROW[$SELECTED]:-}"
+    [[ -n "$MAC" ]] || exit 0
+
+    INFO=$(bluetoothctl info "$MAC" 2>/dev/null)
+
+    if grep -q "Connected: yes" <<< "$INFO"; then
+        bluetoothctl disconnect "$MAC"
+        notify-send "Bluetooth" "Устройство отключено"
+    else
+        if ! grep -q "Paired: yes" <<< "$INFO"; then
+            bluetoothctl pair "$MAC"
+        fi
+        bluetoothctl trust "$MAC"
+        bluetoothctl connect "$MAC"
+        notify-send "Bluetooth" "Команда подключения отправлена"
+    fi
+done

@@ -1,0 +1,76 @@
+
+* {
+    bg:          #181a21;
+    bg-alt:      #222530;
+    fg:          #e0def4;
+    muted:       #777d8c;
+    accent:      #9ccfd8;
+    danger:      #eb6f92;
+
+    background-color: @bg;
+    text-color: @fg;
+    font: "JetBrainsMono Nerd Font 12";
+}
+
+window {
+    width: 360px;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 12px;
+    padding: 18px;
+    location: center;
+    anchor: center;
+}
+
+mainbox {
+    spacing: 12px;
+    children: [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius: 8px;
+    padding: 10px;
+    spacing: 8px;
+    children: [ "prompt", "entry" ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Выберите действие...";
+    placeholder-color: @muted;
+}
+
+listview {
+    lines: 6;
+    fixed-height: true;
+    spacing: 5px;
+    scrollbar: false;
+}
+
+element {
+    padding: 11px;
+    border-radius: 7px;
+    background-color: transparent;
+}
+
+element normal {
+    tex
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+element-icon {
+    background-color: transparent;
+}
+
+message {
+    padding: 5px;
+    background-color: transparent;
+    text-color: @muted;
+}

@@ -1,0 +1,142 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 36,
+  "spacing": 0,
+  "margin-top": 6,
+  "margin-left": 8,
+  "margin-right": 8,
+
+  "modules-left": [
+    "hyprland/workspaces",
+    "tray"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "hyprland/language",
+    "pulseaudio",
+    "custom/kvn",
+    "network",
+    "bluetooth",
+    "battery",
+    "custom/power"
+  ],
+
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "sort-by-number": true,
+    "all-outputs": false,
+    "active-only": false,
+    "persistent-workspaces": {
+      "*": 5
+    }
+  },
+
+  "clock": {
+    "format": "{:%H:%M}",
+    "format-alt": "{:%d.%m.%Y}",
+    "tooltip": true,
+    "tooltip-format": "{:%A, %d %B %Y}"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": {
+      "default": ["󰕿", "󰖀", "󰕾"]
+    },
+    "scroll-step": 5,
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-right":"pavucontrol",
+    "tooltip": true
+  },
+
+  "network": {
+    "format-wifi": "󰖩",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname}",
+    "tooltip-format-disconnected": "Нет подключения",
+    "on-click": "networkmanager_dmenu"
+  },
+
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱",
+    "tooltip-format": "{controller_alias}: {status}",
+    "tooltip-format-connected": "{controller_alias}\n{device_enumerate}",
+     "on-click": "~/.local/bin/bluetooth-menu",
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "format-icons": [
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
+    "tooltip": true,
+    "on-click": "~/.local/bin/power-menu",
+    "events": {
+      "on-discharging-warning": "notify-send -u normal -i battery-low 'Низкий заряд батареи' 'Осталось 20% заряда. Подключи зарядное устройство.'",
+      "on-discharging-critical": "notify-send -u critical -i battery-caution 'Критический заряд батареи' 'Осталось 10%! Подключи зарядное устройство.'"
+    },
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-us": "US",
+    "format-ru": "RU",
+    "keyboard-name": "asustek-computer-inc.-n-key-device",
+    "tooltip": false
+  },
+  "custom/kvn": {
+    "exec": "kvn --waybar-status",
+    "return-type": "json",
+    "interval": 1,
+    "format": "{}",
+    "tooltip": true,
+    "on-click": "kvn toggle",
+    "on-click-right": "kitty -e kvn"
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": true,
+    "tooltip-format": "Меню питания",
+    "on-click": "~/.config/waybar/scripts/powermenu.sh"
+  },
+  "backlight": {
+    "device": "amdgpu_bl1",
+    "format": "☀",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl -d amdgpu_bl1 set +5%",
+    "on-scroll-down": "brightnessctl -d amdgpu_bl1 set 5%-",
+    "tooltip": true,
+    "tooltip-format": "{percent}%",
+    "smooth-scrolling-threshold": 1
+},
+}

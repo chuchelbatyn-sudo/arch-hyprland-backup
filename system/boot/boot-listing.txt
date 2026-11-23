@@ -1,0 +1,8 @@
+total 173336
+drwxr-xr-x 4 nobody nobody      4096 Jan  1  1970 .
+dr-xr-xr-x 1 nobody nobody       122 Oct 28 11:31 ..
+-rwxr-xr-x 1 nobody nobody    307200 Oct 20 02:57 amd-ucode.img
+drwxr-xr-x 3 nobody nobody      4096 Oct 28 11:32 EFI
+drwxr-xr-x 6 nobody nobody      4096 Oct 28 11:32 grub
+-rwxr-xr-x 1 nobody nobody 159742400 Nov 23 11:31 initramfs-linux.img
+-rwxr-xr-x 1 nobody nobody  17428992 Nov 23 11:31 vmlinuz-linux

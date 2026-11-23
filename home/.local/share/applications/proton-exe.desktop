@@ -1,0 +1,9 @@
+
+[Desktop Entry]
+Name=Run with GE-Proton
+Comment=Run Windows applications using GE-Proton
+Exec=/home/user/.local/bin/run-proton.sh %f
+Type=Application
+Terminal=false
+Categories=Game;Utility;
+MimeType=application/x-ms-dos-executable;application/vnd.microsoft.portable-executable;application/x-msdownload;

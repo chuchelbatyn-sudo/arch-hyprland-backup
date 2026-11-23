@@ -1,0 +1,13 @@
+portproton 1.7.5-1
+protonup-qt 2.16.0-1
+python-gevent-eventemitter 2.1-6
+python-inputs 0.5-4
+python-steam 2.0.0.alpha1-3
+rar 7.23-1
+rar-debug 7.23-1
+snake 0.3.2-1
+snake-debug 0.3.2-1
+teamspeak 6.0.0beta5-1
+teamspeak-debug 6.0.0beta5-1
+yay 13.0.1-1
+yay-debug 13.0.1-1

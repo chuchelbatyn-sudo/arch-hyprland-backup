@@ -1,0 +1,2 @@
+ls: cannot access '/home/user/.config/systemd': No such file or directory
+~/.config/systemd/user отсутствует: пользовательских юнитов нет.

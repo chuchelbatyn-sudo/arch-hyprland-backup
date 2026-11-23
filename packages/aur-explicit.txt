@@ -1,0 +1,7 @@
+portproton
+protonup-qt
+rar
+snake
+teamspeak
+yay
+yay-debug

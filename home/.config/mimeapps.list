@@ -1,0 +1,5 @@
+
+[Default Applications]
+x-scheme-handler/codex=chatgpt.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+application/x-ms-dos-executable;application/x-wine-extension-msp;application/x-msi;application/x-msdos-program;text/win-bat;=PortProton.desktop

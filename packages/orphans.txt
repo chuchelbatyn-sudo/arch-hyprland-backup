@@ -1,0 +1,16 @@
+cmake
+dpkg
+fvm
+gendesk
+go
+patchelf
+pnpm
+python-build
+python-gevent-eventemitter
+python-installer
+python-pytest
+python-vcrpy
+rar-debug
+rust
+snake-debug
+teamspeak-debug
