@@ -7,8 +7,9 @@
 > Репозиторий **публичный**: секретов в нём нет, но конфигурация системы
 > видна всем. Не добавляйте сюда пароли, токены и приватные ключи.
 >
-> **UUID разделов в `fstab` и `grub.cfg` заменены на нули.** При восстановлении
-> берите реальные значения из `blkid` — `restore.sh --mode system` об этом предупреждает.
+> **UUID разделов в `fstab` заменены на нули.** `restore.sh --mode system --yes`
+> подставляет реальные UUID автоматически (`blkid`/`findmnt`), а `grub.cfg`
+> пересобирает через `grub-mkconfig`.
 
 # ArchBackup — конфигурация Arch Linux + Hyprland
 
@@ -145,14 +146,26 @@ yay -S --needed - < packages/aur-explicit.txt
 Автозапуск в сессии Hyprland — через `exec-once` в `hyprland.lua`:
 `waybar`, `kvn`, `hypridle`, `cliphist-watch`, `swayosd-server` (строку про `kvn` можно убрать — пакет не восстановлен).
 
-### Шаг 4. Системные файлы (вручную)
-`restore.sh --mode system` **только печатает** готовые `sudo cp` — скрипт не меняет `/etc` и `/boot`.
-После копирования:
+### Шаг 4. Системные файлы (автоматически)
+`restore.sh --mode system` без флагов только показывает план. С `--yes` скрипт делает всё сам:
+
+1. **fstab** — подставляет реальные UUID текущих разделов: для каждой строки находит
+   устройство через `findmnt` (резерв — `/proc/mounts`) и берёт UUID через `blkid`
+   (резерв — `lsblk`). Готовый файл пишется в `/tmp/fstab-restored-<дата>`,
+   прежний `/etc/fstab` сохраняется как `fstab.bak-<дата>`.
+2. **Остальные файлы `/etc`** — копирует с резервной копией рядом (`.bak-<дата>`).
+3. **hostname** — только если указан `--hostname имя`: пишет `/etc/hostname`
+   и правит строку `127.0.1.1` в `/etc/hosts`. Без флага hostname не меняется.
+4. **Загрузчик** — `grub-mkconfig -o /boot/grub/grub.cfg` и `mkinitcpio -P`.
+   `grub.cfg` из копии **не копируется** (в нём плейсхолдеры), а пересобирается.
+
 ```bash
-sudo mkinitcpio -P                 # если меняли mkinitcpio.conf
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo systemctl daemon-reload
+./restore.sh --mode system --yes --hostname zephyrus
 ```
+
+Если какая-то точка монтирования не смонтирована, для неё останется плейсхолдер,
+а скрипт выведет предупреждение — такую строку `fstab` нужно поправить вручную.
+
 Загрузчик: GRUB 2.16 в UEFI. `efibootmgr` требует root — проверьте порядок загрузки после установки.
 
 ### Шаг 5. Вручную, после первого входа
@@ -180,8 +193,9 @@ sudo systemctl daemon-reload
 
 ## 5. Ограничения и предупреждения
 
-- `restore.sh` не удаляет ничего и не трогает `/etc`, `/boot` самостоятельно.
-- `restore.sh --mode all` устанавливает пакеты **только** с `--yes`.
+- `restore.sh` не удаляет ничего; `/etc` и `/boot` меняются только с флагом `--yes`.
+- `restore.sh --mode all` устанавливает пакеты и меняет `/etc` **только** с `--yes`.
+- Перед изменением любого файла создаётся резервная копия `.bak-<дата>` рядом с оригиналом.
 - Секреты в копии отсутствуют: после переустановки их нужно ввести заново.
 - Копия не заменяет резервную копию личных файлов (`~/Documents`, `~/Pictures`, `~/Projects` и т.п.) — их нужно сохранить отдельно.
 - Если Hyprland обновится до версии с другим синтаксисом Lua-конфига — сверяйтесь с `hyprland.lua.backup` и вики Hyprland.
@@ -198,6 +212,6 @@ sha256sum -c checksums.sha256      # 1. целостность
 ./restore.sh --mode packages --yes # 3. пакеты
 ./restore.sh --mode configs        # 4. конфиги
 ./restore.sh --mode services --yes # 5. службы
-./restore.sh --mode system         # 6. sudo-команды для /etc и GRUB
+./restore.sh --mode system --yes --hostname <имя>  # 6. fstab, /etc, GRUB
 ./audit.sh                         # 7. проверка
 ```

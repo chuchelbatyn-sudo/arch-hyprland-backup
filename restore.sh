@@ -3,18 +3,23 @@
 # restore.sh — восстановление конфигурации Arch Linux + Hyprland
 #
 # Использование:
-#   ./restore.sh --dry-run              показать план без изменений
-#   ./restore.sh --mode configs         только конфиги в $HOME
-#   ./restore.sh --mode services        включить системные службы
-#   ./restore.sh --mode packages --yes  установить пакеты (pacman + yay)
-#   ./restore.sh --mode system          ТОЛЬКО напечатать sudo-команды
-#   ./restore.sh --mode apps            инструкции для приложений вручную
-#   ./restore.sh --mode all             configs + services (+ packages с --yes)
+#   ./restore.sh --dry-run                     показать план без изменений
+#   ./restore.sh --mode configs                конфиги в $HOME
+#   ./restore.sh --mode services --yes         включить системные службы
+#   ./restore.sh --mode packages --yes         установить пакеты (pacman + yay)
+#   ./restore.sh --mode system                 напечатать, что будет сделано
+#   ./restore.sh --mode system --yes           применить: fstab с реальными UUID,
+#                                              /etc, hostname, grub-mkconfig, mkinitcpio
+#   ./restore.sh --mode system --yes --hostname zephyrus
+#   ./restore.sh --mode apps                   инструкции для приложений вручную
+#   ./restore.sh --mode all                    configs + services (+ packages с --yes)
 #
 # Безопасность:
 #   * ничего не удаляет;
 #   * перед перезаписью существующего файла делает копию .bak-<дата>;
-#   * системные файлы (/etc, /boot) сама не меняет — только печатает команды;
+#   * /etc и /boot меняются только с флагом --yes;
+#   * UUID в fstab подставляются автоматически: blkid + findmnt по точкам монтирования;
+#   * grub.cfg не копируется, а пересобирается grub-mkconfig;
 #   * при --mode packages установка идёт только с флагом --yes.
 # =============================================================================
 set -uo pipefail
@@ -35,9 +40,26 @@ LOG="$LOG_DIR/restore-log-$STAMP.txt"
 MODE="all"
 DRY=0
 ASSUME_YES=0
+NEW_HOSTNAME=""
 ERRORS=0
 
-usage() { sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() {
+  cat <<'EOF'
+restore.sh — восстановление конфигурации Arch Linux + Hyprland
+
+  --dry-run              показать, что будет сделано, ничего не меняя
+  --mode <режим>         configs | services | packages | system | apps | all
+  --hostname <имя>       задать hostname (без флага hostname не меняется)
+  --yes, -y              выполнять изменения (иначе только печать команд)
+  --backup-dir <путь>    каталог резервной копии
+  -h, --help             эта справка
+
+Примеры:
+  ./restore.sh --mode configs
+  ./restore.sh --mode services --yes
+  ./restore.sh --mode system --yes --hostname zephyrus
+EOF
+}
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -45,6 +67,7 @@ while [ $# -gt 0 ]; do
     --mode)         MODE="${2:-}"; shift ;;
     --yes|-y)       ASSUME_YES=1 ;;
     --backup-dir)   BACKUP_DIR="${2:-}"; shift ;;
+    --hostname)     NEW_HOSTNAME="${2:-}"; shift ;;
     -h|--help)      usage; exit 0 ;;
     *) echo "Неизвестный аргумент: $1"; usage; exit 2 ;;
   esac
@@ -55,6 +78,11 @@ case "$MODE" in
   packages|configs|services|apps|system|all) ;;
   *) echo "Неверный --mode: $MODE (packages|configs|services|apps|system|all)"; exit 2 ;;
 esac
+
+if [ -n "$NEW_HOSTNAME" ] && ! printf '%s' "$NEW_HOSTNAME" | grep -qE '^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$'; then
+  echo "Недопустимый hostname: $NEW_HOSTNAME (a-z, 0-9, дефис; до 63 символов)"
+  exit 2
+fi
 
 # ------------------------------------------------------------------ вывод
 log()  { printf '%s\n' "$*" >> "$LOG" 2>/dev/null || true; }
@@ -210,37 +238,141 @@ restore_packages() {
   fi
 }
 
-restore_system() {
-  head1 "Системные файлы (/etc, /boot) — только печать команд"
-  say "Эти команды выполняются вручную, restore.sh их не запускает."
-  say ""
-
-  local root="$BACKUP_DIR/system/etc"
-  if [ -d "$root" ] && grep -q '00000000-0000-0000-0000-000000000000' "$root/fstab" 2>/dev/null; then
-    warn "ВНИМАНИЕ: в этой копии UUID разделов заменены нулями (санитизация)."
-    warn "Не копируйте fstab и grub.cfg вслепую — подставьте реальные UUID из 'blkid'."
+# Устройство, на котором смонтирована точка (без суффикса [/subvol]).
+dev_for_mount() {
+  local mnt="$1" d=""
+  d="$(findmnt -no SOURCE --target "$mnt" 2>/dev/null | head -1)"
+  if [ -z "$d" ] && [ -r /proc/mounts ]; then
+    d="$(awk -v m="$mnt" '$2==m {print $1; exit}' /proc/mounts 2>/dev/null)"
   fi
-  if [ -d "$root" ]; then
-    local rel
-    while IFS= read -r -d '' rel; do
-      rel="${rel#"$root/"}"
-      say "  sudo cp -a \"$root/$rel\" \"/etc/$rel\""
-    done < <(find "$root" -type f -print0 2>/dev/null | sort -z)
+  printf '%s' "${d%%\[*}"
+}
+
+# UUID раздела: blkid, затем lsblk (в том числе по имени ядра).
+uuid_of() {
+  local dev="$1" u=""
+  [ -z "$dev" ] && return 0
+  u="$(blkid -s UUID -o value "$dev" 2>/dev/null)"
+  [ -n "$u" ] || u="$(lsblk -no UUID "$dev" 2>/dev/null | head -1)"
+  if [ -z "$u" ]; then
+    u="$(lsblk -lno NAME,UUID 2>/dev/null | awk -v n="$(basename "$dev")" '$1==n {print $2; exit}')"
+  fi
+  printf '%s' "$u"
+}
+
+# Подставляет реальные UUID в fstab по точкам монтирования.
+gen_fstab() {
+  local out="$1" src="$BACKUP_DIR/system/etc/fstab"
+  local line spec mnt fstype opts dump pass dev uuid
+  : > "$out"
+  while IFS= read -r line; do
+    case "$line" in
+      ''|\#*) printf '%s\n' "$line" >> "$out"; continue ;;
+    esac
+    read -r spec mnt fstype opts dump pass <<< "$line"
+    if [ "${spec#UUID=}" != "$spec" ]; then
+      dev="$(dev_for_mount "$mnt")"
+      if [ -z "$dev" ]; then
+        warn "$mnt: точка монтирования не найдена — оставляю плейсхолдер"
+      else
+        uuid="$(uuid_of "$dev")"
+        if [ -n "$uuid" ]; then
+          say "    $mnt: $spec -> UUID=$uuid ($dev)"
+          spec="UUID=$uuid"
+        else
+          warn "$mnt: не удалось определить UUID для $dev"
+        fi
+      fi
+    fi
+    printf '%s\t%s\t%s\t%s\t%s %s\n' "$spec" "$mnt" "$fstype" "$opts" "$dump" "$pass" >> "$out"
+  done < "$src"
+}
+
+# Копирует файл в /etc (с резервной копией) либо печатает команду.
+install_etc() {
+  local src="$1" dst="$2"
+  say "  sudo cp -a \"$src\" \"$dst\""
+  [ "$DRY" = 1 ] && return 0
+  [ "$ASSUME_YES" = 1 ] || return 0
+  sudo mkdir -p "$(dirname -- "$dst")" 2>/dev/null || true
+  [ -e "$dst" ] && sudo cp -a "$dst" "$dst.bak-$STAMP" 2>/dev/null
+  if sudo cp -a "$src" "$dst"; then ok "обновлён: $dst"; else err "не удалось: $dst"; fi
+}
+
+set_hostname() {
+  local name="$1"
+  say "  hostname -> $name (/etc/hostname и /etc/hosts)"
+  [ "$DRY" = 1 ] && return 0
+  [ "$ASSUME_YES" = 1 ] || return 0
+  [ -e /etc/hostname ] && sudo cp -a /etc/hostname "/etc/hostname.bak-$STAMP" 2>/dev/null
+  if ! printf '%s\n' "$name" | sudo tee /etc/hostname >/dev/null; then
+    err "не записался /etc/hostname"; return
+  fi
+  if grep -q '^127\.0\.1\.1' /etc/hosts 2>/dev/null; then
+    sudo sed -i "s/^127\.0\.1\.1.*/127.0.1.1\t$name/" /etc/hosts || warn "не поправился /etc/hosts"
   else
-    warn "каталог system/etc отсутствует"
+    printf '127.0.1.1\t%s\n' "$name" | sudo tee -a /etc/hosts >/dev/null || warn "не дописался /etc/hosts"
+  fi
+  ok "hostname: $name"
+}
+
+restore_system() {
+  head1 "Системные файлы (/etc, /boot)"
+  local root="$BACKUP_DIR/system/etc"
+  if [ ! -d "$root" ]; then warn "каталог system/etc отсутствует"; return; fi
+
+  if [ "$DRY" = 0 ] && [ "$ASSUME_YES" = 0 ]; then
+    say "Показан план. Применить изменения: добавьте --yes."
   fi
 
-  if [ -f "$BACKUP_DIR/system/boot/grub.cfg" ]; then
-    say ""
-    say "  # конфигурация GRUB (после правки /etc/default/grub):"
-    say "  sudo cp -a \"$BACKUP_DIR/system/boot/grub.cfg\" /boot/grub/grub.cfg"
-    say "  # либо пересобрать: sudo grub-mkconfig -o /boot/grub/grub.cfg"
+  # 1. fstab с реальными UUID
+  say ""
+  say "1) fstab — реальные UUID текущих разделов"
+  local genf="${TMPDIR:-/tmp}/fstab-restored-$STAMP"
+  gen_fstab "$genf"
+  say "   готовый файл: $genf"
+  if [ "$DRY" = 0 ] && [ "$ASSUME_YES" = 1 ]; then
+    [ -e /etc/fstab ] && sudo cp -a /etc/fstab "/etc/fstab.bak-$STAMP" 2>/dev/null
+    if sudo cp "$genf" /etc/fstab; then ok "fstab записан"; else err "fstab не записался"; fi
+  else
+    say "   применить:   sudo cp \"$genf\" /etc/fstab"
+  fi
+
+  # 2. остальные файлы /etc (fstab/hostname/hosts — отдельно)
+  say ""
+  say "2) остальные файлы /etc"
+  local rel
+  while IFS= read -r -d '' rel; do
+    rel="${rel#"$root/"}"
+    case "$rel" in fstab|hostname|hosts) continue ;; esac
+    install_etc "$root/$rel" "/etc/$rel"
+  done < <(find "$root" -type f -print0 2>/dev/null | sort -z)
+
+  # 3. hostname
+  say ""
+  say "3) hostname"
+  if [ -n "$NEW_HOSTNAME" ]; then
+    set_hostname "$NEW_HOSTNAME"
+  else
+    local old_host
+    old_host="$(cat "$root/hostname" 2>/dev/null)"
+    warn "hostname не задан (--hostname): /etc/hostname и /etc/hosts не меняются"
+    [ -n "$old_host" ] && say "   в копии было: $old_host (обезличено)"
+  fi
+
+  # 4. загрузчик и initramfs
+  say ""
+  say "4) загрузчик и initramfs"
+  say "   sudo grub-mkconfig -o /boot/grub/grub.cfg"
+  say "   sudo mkinitcpio -P"
+  say "   (system/boot/grub.cfg не копируется — он пересобирается)"
+  if [ "$DRY" = 0 ] && [ "$ASSUME_YES" = 1 ]; then
+    sudo grub-mkconfig -o /boot/grub/grub.cfg || err "grub-mkconfig завершился с ошибкой"
+    sudo mkinitcpio -P || err "mkinitcpio -P завершился с ошибкой"
   fi
 
   say ""
-  say "  # затем:"
-  say "  sudo mkinitcpio -P        # если меняли mkinitcpio.conf"
-  say "  sudo systemctl daemon-reload"
+  say "   sudo systemctl daemon-reload"
 }
 
 restore_apps() {
